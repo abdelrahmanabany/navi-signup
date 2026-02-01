@@ -45,9 +45,11 @@
             <h2 class="card-title">SIGN UP</h2>
             <p class="card-subtitle">First 20 get 1 year free</p>
 
-            <form class="signup-form" id="signupForm">
+            <form class="signup-form" id="signupForm" autocomplete="off">
               <input class="field" type="text" name="name" placeholder="Name" required />
               <input class="field" type="email" name="email" placeholder="Email" required />
+              <!-- Honeypot field - hidden from users, catches bots -->
+              <input type="text" name="website" style="position:absolute;left:-9999px;opacity:0;height:0;" tabindex="-1" autocomplete="off" />
               <button class="cta" type="submit">Sign Up</button>
             </form>
           </div>
@@ -62,12 +64,44 @@
     </main>
 
     <script>
+      const API_URL = "https://navi-signup-api.abdelrahmanabany.workers.dev";
+
       const form = document.getElementById("signupForm");
       const card = document.getElementById("signupCard");
+      const submitBtn = form.querySelector('button[type="submit"]');
 
-      form.addEventListener("submit", (e) => {
-        e.preventDefault(); // prevents page reload
-        card.classList.add("is-success");
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const name = form.name.value.trim();
+        const email = form.email.value.trim();
+        const website = form.website.value; // Honeypot
+
+        // Disable button while submitting
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Signing up...";
+
+        try {
+          const response = await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, email, website })
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            card.classList.add("is-success");
+          } else {
+            alert(data.error || "Something went wrong. Please try again.");
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Sign Up";
+          }
+        } catch (error) {
+          alert("Network error. Please check your connection and try again.");
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Sign Up";
+        }
       });
     </script>
   </body>

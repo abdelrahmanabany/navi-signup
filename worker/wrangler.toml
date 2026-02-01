@@ -1,0 +1,8 @@
+name = "navi-signup-api"
+main = "src/index.js"
+compatibility_date = "2024-01-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "navi-signups"
+database_id = "f52d2302-7cc0-44bd-bc85-e5f5ed054f63"

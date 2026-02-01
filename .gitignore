@@ -9,6 +9,13 @@ Thumbs.db
 *.swp
 *.swo
 .vscode/
+
+# Node
+node_modules/
+
+# Wrangler
+.wrangler/
+.dev.vars
 .idea/
 
 # Logs
