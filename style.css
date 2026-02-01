@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap');
-
 * {
   box-sizing: border-box;
 }
@@ -18,18 +16,29 @@ html, body {
 }
 
 body {
-  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* ===== PAGE LAYOUT ===== */
 .page {
   min-height: 100vh;
+  min-height: -webkit-fill-available; /* iOS Safari fix */
   display: flex;
   align-items: center;
   justify-content: center;
   gap: clamp(60px, 8vw, 120px);
   padding: clamp(24px, 5vw, 80px);
-  background: url("./bg2.png") center/cover no-repeat fixed;
+  background: url("./bg2.png") center/cover no-repeat;
+  background-attachment: scroll; /* Fixed causes issues on iOS */
+}
+
+@supports (-webkit-touch-callout: none) {
+  /* iOS-specific fixes */
+  .page {
+    min-height: -webkit-fill-available;
+  }
 }
 
 /* ===== LEFT SECTION ===== */
@@ -79,7 +88,6 @@ body {
 
 /* Headline */
 .headline {
-  font-family: 'Outfit', sans-serif;
   font-size: clamp(32px, 5vw, 52px);
   font-weight: 800;
   line-height: 1.1;
@@ -107,7 +115,6 @@ body {
 }
 
 .point h3 {
-  font-family: 'Outfit', sans-serif;
   font-size: clamp(18px, 2.5vw, 22px);
   font-weight: 700;
   margin: 0 0 6px;
@@ -166,7 +173,6 @@ body {
 
 /* Card Title */
 .card-title {
-  font-family: 'Outfit', sans-serif;
   margin: 0;
   text-align: center;
   color: var(--card-purple);
@@ -209,9 +215,11 @@ body {
   border: 2px solid transparent;
   border-radius: 14px;
   background: var(--input-bg);
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: clamp(16px, 2vw, 18px);
+  font-family: inherit;
+  font-size: 16px; /* Fixed 16px prevents iOS zoom on focus */
   outline: none;
+  -webkit-appearance: none; /* Fix iOS styling */
+  appearance: none;
   transition:
     border-color 0.25s ease,
     background-color 0.25s ease,
@@ -247,11 +255,14 @@ body {
   border-radius: 14px;
   background: var(--card-purple);
   color: #ffffff;
-  font-family: 'Outfit', sans-serif;
-  font-size: clamp(16px, 2vw, 18px);
+  font-family: inherit;
+  font-size: 18px;
   font-weight: 600;
   letter-spacing: 0.02em;
   cursor: pointer;
+  -webkit-appearance: none; /* Fix iOS styling */
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
   transition:
     background-color 0.25s ease,
     transform 0.2s ease,
@@ -297,8 +308,7 @@ body {
   pointer-events: none;
   transition: opacity 400ms ease;
   color: var(--card-purple);
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: clamp(16px, 2vw, 18px);
+  font-size: 18px;
   font-weight: 600;
   line-height: 1.5;
 }
@@ -461,7 +471,7 @@ body {
   .field {
     height: 52px;
     padding: 0 18px;
-    font-size: 16px;
+    font-size: 16px; /* Prevents iOS zoom */
     border-radius: 12px;
   }
 
@@ -470,6 +480,14 @@ body {
     font-size: 16px;
     border-radius: 12px;
     margin-top: 6px;
+  }
+}
+
+/* iOS Safari input fixes */
+@supports (-webkit-touch-callout: none) {
+  .field,
+  .cta {
+    font-size: 16px; /* Prevents auto-zoom on iOS */
   }
 }
 
