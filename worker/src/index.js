@@ -122,7 +122,7 @@ export default {
 async function handleGetSignups(db, origin) {
   try {
     const { results } = await db.prepare(
-      'SELECT id, name, first_name, last_name, email, created_at FROM signups ORDER BY created_at DESC'
+      'SELECT id, first_name, last_name, email, created_at FROM signups ORDER BY created_at DESC'
     ).all();
 
     return jsonResponse({
@@ -178,7 +178,7 @@ function isValidEmail(email) {
 function corsHeaders(origin) {
   return {
     'Access-Control-Allow-Origin': origin,
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
     'Access-Control-Max-Age': '86400',
   };
