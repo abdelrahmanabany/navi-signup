@@ -47,7 +47,7 @@ export default {
 
     try {
       const body = await request.json();
-      const { name, email, website } = body; // 'website' is honeypot
+      const { firstName, lastName, email, website } = body; // 'website' is honeypot
 
       // HONEYPOT: If 'website' field is filled, it's a bot
       if (website) {
@@ -56,13 +56,18 @@ export default {
       }
 
       // Validate required fields
-      if (!name || !email) {
-        return jsonResponse({ error: 'Name and email are required' }, 400, allowedOrigin);
+      if (!firstName || !email) {
+        return jsonResponse({ error: 'First name and email are required' }, 400, allowedOrigin);
       }
 
-      // Validate name length
-      if (name.length < 2 || name.length > 100) {
-        return jsonResponse({ error: 'Name must be 2-100 characters' }, 400, allowedOrigin);
+      // Validate name lengths
+      if (firstName.length < 1 || firstName.length > 50) {
+        return jsonResponse({ error: 'First name must be 1-50 characters' }, 400, allowedOrigin);
+      }
+
+      // Validate last name length only if provided
+      if (lastName && lastName.length > 50) {
+        return jsonResponse({ error: 'Last name must be 50 characters or less' }, 400, allowedOrigin);
       }
 
       // Validate email format
@@ -83,9 +88,10 @@ export default {
 
       // Insert signup
       await env.DB.prepare(
-        'INSERT INTO signups (name, email, ip_hash) VALUES (?, ?, ?)'
+        'INSERT INTO signups (first_name, last_name, email, ip_hash) VALUES (?, ?, ?, ?)'
       ).bind(
-        sanitize(name),
+        sanitize(firstName),
+        lastName ? sanitize(lastName) : null,
         email.toLowerCase().trim(),
         await hashIP(clientIP) // Store hashed IP for rate limiting
       ).run();
@@ -116,7 +122,7 @@ export default {
 async function handleGetSignups(db, origin) {
   try {
     const { results } = await db.prepare(
-      'SELECT id, name, email, created_at FROM signups ORDER BY created_at DESC'
+      'SELECT id, name, first_name, last_name, email, created_at FROM signups ORDER BY created_at DESC'
     ).all();
 
     return jsonResponse({

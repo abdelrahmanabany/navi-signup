@@ -22,18 +22,28 @@
 
         <div class="points">
           <div class="point">
-            <h3>Explain content</h3>
-            <p>Break down concepts step by step, in simple language.</p>
+            <h3>Course-based setup</h3>
+            <p>Your semester stays organized by course, not by random tabs and screenshots.</p>
           </div>
 
           <div class="point">
-            <h3>Assignment help</h3>
-            <p>Get guided support without being given the answer.</p>
+            <h3>Multiple study modes</h3>
+            <p>Some days you need a clear explanation. Other days you need questions to test yourself. NAVI lets you study the way that works for you.</p>
           </div>
 
           <div class="point">
-            <h3>Group study</h3>
-            <p>Study together, share context, and learn as a group.</p>
+            <h3>Assignment support</h3>
+            <p>Finish assignments faster with clear guidance that makes the work make sense.</p>
+          </div>
+
+          <div class="point">
+            <h3>Group channels</h3>
+            <p>No more messy group chats. One channel for studying and group work, plus summarize help to clarify, summarize, and keep things moving.</p>
+          </div>
+
+          <div class="point">
+            <h3>Personalized guidance</h3>
+            <p>See your progress clearly, so you know what is done, what is shaky, and what still needs work.</p>
           </div>
         </div>
       </section>
@@ -46,7 +56,8 @@
             <p class="card-subtitle">First 20 get 1 year free</p>
 
             <form class="signup-form" id="signupForm" autocomplete="off">
-              <input class="field" type="text" name="name" placeholder="Name" required />
+              <input class="field" type="text" name="firstName" placeholder="First Name" required />
+              <input class="field" type="text" name="lastName" placeholder="Last Name" required />
               <input class="field" type="email" name="email" placeholder="Email" required />
               <!-- Honeypot field - hidden from users, catches bots -->
               <input type="text" name="website" style="position:absolute;left:-9999px;opacity:0;height:0;" tabindex="-1" autocomplete="off" />
@@ -73,7 +84,8 @@
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        const name = form.name.value.trim();
+        const firstName = form.firstName.value.trim();
+        const lastName = form.lastName.value.trim();
         const email = form.email.value.trim();
         const website = form.website.value; // Honeypot
 
@@ -85,7 +97,7 @@
           const response = await fetch(API_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name, email, website })
+            body: JSON.stringify({ firstName, lastName, email, website })
           });
 
           const data = await response.json();
