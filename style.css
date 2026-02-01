@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap');
+
 * {
   box-sizing: border-box;
 }
@@ -10,102 +12,175 @@ html, body {
 :root {
   --card-purple: #7a41d8;
   --input-bg: #efe8fb;
+  --card-bg: #ffffff;
+  --text-gray: #5a5a5a;
+  --placeholder: rgba(0, 0, 0, 0.55);
 }
 
 body {
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
 }
 
+/* ===== PAGE LAYOUT ===== */
 .page {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
-  align-items: center;        /* vertical center */
-  justify-content: center;    /* horizontal center */
-  gap: 100px;                 /* space between left & right */
-  padding: 80px;
-
-  background: url("./bg2.png") center/cover no-repeat;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(60px, 8vw, 120px);
+  padding: clamp(24px, 5vw, 80px);
+  background: url("./bg2.png") center/cover no-repeat fixed;
 }
 
+/* ===== LEFT SECTION ===== */
 .left {
-  max-width: 600px;
+  max-width: 560px;
   color: #ffffff;
+}
+
+/* Staggered fade-in animations */
+.brand {
+  animation: fadeSlideUp 0.6s ease-out both;
+  animation-delay: 0.1s;
+}
+
+.headline {
+  animation: fadeSlideUp 0.6s ease-out both;
+  animation-delay: 0.2s;
+}
+
+.point:nth-child(1) { animation: fadeSlideUp 0.5s ease-out both; animation-delay: 0.3s; }
+.point:nth-child(2) { animation: fadeSlideUp 0.5s ease-out both; animation-delay: 0.4s; }
+.point:nth-child(3) { animation: fadeSlideUp 0.5s ease-out both; animation-delay: 0.5s; }
+.point:nth-child(4) { animation: fadeSlideUp 0.5s ease-out both; animation-delay: 0.6s; }
+.point:nth-child(5) { animation: fadeSlideUp 0.5s ease-out both; animation-delay: 0.7s; }
+
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Logo */
 .brand {
-  margin-bottom: 25px;
+  margin-bottom: 28px;
 }
 
 .brand img {
-  height: 24px;
+  height: 28px;
   width: auto;
   display: block;
 }
 
 /* Headline */
 .headline {
-  font-size: 50px;
-  font-weight: 750;
-  line-height: 1.15;
-  margin: 0 0 60px;
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 800;
+  line-height: 1.1;
+  margin: 0 0 48px;
+  letter-spacing: -0.02em;
 }
 
+/* Feature Points */
 .points {
-  max-width: 460px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  max-width: 480px;
 }
 
 .point {
-  margin-bottom: 32px;
+  padding-left: 20px;
+  border-left: 3px solid rgba(255, 255, 255, 0.3);
+  transition: border-color 0.3s ease, transform 0.3s ease;
+}
+
+.point:hover {
+  border-left-color: rgba(255, 255, 255, 0.8);
+  transform: translateX(4px);
 }
 
 .point h3 {
-  font-size: 22px;
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(18px, 2.5vw, 22px);
   font-weight: 700;
   margin: 0 0 6px;
+  letter-spacing: -0.01em;
 }
 
 .point p {
-  font-size: 16px;
-  line-height: 1.5;
+  font-size: clamp(14px, 1.8vw, 16px);
+  line-height: 1.6;
   margin: 0;
-  opacity: 0.9;
+  opacity: 0.85;
 }
 
+/* ===== RIGHT SECTION ===== */
 .right {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeSlideUp 0.7s ease-out both;
+  animation-delay: 0.15s;
 }
 
-/* Card */
+/* Signup Card */
 .signup-card {
-  width: 520px;
-  background: #ffffff;
+  width: min(520px, 90vw);
+  background: var(--card-bg);
   border-radius: 28px;
-  padding: 64px 56px;
-  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.2);
-  position: relative; /* needed for centering the success message */
+  padding: clamp(40px, 6vw, 64px) clamp(32px, 5vw, 56px);
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.15),
+    0 8px 24px rgba(0, 0, 0, 0.1);
+  position: relative;
   overflow: hidden;
 }
 
-.card-content {
-  transition: opacity 300ms ease;
+/* Subtle gradient accent on card top */
+.signup-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--card-purple), #9f6ae8);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
-/* Card text */
+.signup-card:hover::before {
+  opacity: 1;
+}
+
+.card-content {
+  transition: opacity 300ms ease, transform 300ms ease;
+}
+
+/* Card Title */
 .card-title {
+  font-family: 'Outfit', sans-serif;
   margin: 0;
   text-align: center;
   color: var(--card-purple);
   font-weight: 800;
-  letter-spacing: 1px;
-  font-size: 28px;
+  letter-spacing: 0.08em;
+  font-size: clamp(24px, 3vw, 28px);
 }
 
+/* Card Subtitle */
 .card-subtitle {
-  margin: 10px 0 38px;
+  margin: 12px 0 36px;
   text-align: center;
-  color: #5a5a5a;
-  font-size: 16px;
+  color: var(--text-gray);
+  font-size: clamp(14px, 2vw, 16px);
   font-weight: 500;
 }
 
@@ -113,82 +188,362 @@ body {
 .signup-form {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 16px;
 }
 
+/* Name row - side by side on desktop */
+.name-row {
+  display: flex;
+  gap: 12px;
+}
+
+.name-row .field {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Input Fields */
 .field {
-  height: 62px;
+  height: clamp(54px, 7vw, 62px);
   padding: 0 22px;
-  border: none;
+  border: 2px solid transparent;
   border-radius: 14px;
   background: var(--input-bg);
-  font-size: 18px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(16px, 2vw, 18px);
   outline: none;
+  transition:
+    border-color 0.25s ease,
+    background-color 0.25s ease,
+    transform 0.2s ease,
+    box-shadow 0.25s ease;
 }
 
 .field::placeholder {
-  color: rgba(0, 0, 0, 0.55);
+  color: var(--placeholder);
+  transition: color 0.25s ease;
 }
 
-/* Button */
+.field:hover {
+  background: #e8def7;
+}
+
+.field:focus {
+  border-color: var(--card-purple);
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(122, 65, 216, 0.12);
+  transform: translateY(-2px);
+}
+
+.field:focus::placeholder {
+  color: rgba(0, 0, 0, 0.35);
+}
+
+/* Submit Button */
 .cta {
-  margin-top: 10px;
-  height: 66px;
+  margin-top: 8px;
+  height: clamp(58px, 7vw, 66px);
   border: none;
   border-radius: 14px;
   background: var(--card-purple);
   color: #ffffff;
-  font-size: 18px;
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(16px, 2vw, 18px);
   font-weight: 600;
+  letter-spacing: 0.02em;
   cursor: pointer;
+  transition:
+    background-color 0.25s ease,
+    transform 0.2s ease,
+    box-shadow 0.25s ease;
+  position: relative;
+  overflow: hidden;
 }
 
+.cta::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.cta:hover:not(:disabled) {
+  background: #6835c2;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(122, 65, 216, 0.35);
+}
+
+.cta:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(122, 65, 216, 0.25);
+}
+
+.cta:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Success Message */
 .success-message {
   position: absolute;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  padding: 64px 56px;
+  padding: clamp(40px, 6vw, 64px) clamp(32px, 5vw, 56px);
   text-align: center;
-
   opacity: 0;
   pointer-events: none;
-  transition: opacity 300ms ease;
-
-  color: #7a41d8;
-  font-size: 18px;
+  transition: opacity 400ms ease;
+  color: var(--card-purple);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(16px, 2vw, 18px);
   font-weight: 600;
+  line-height: 1.5;
 }
 
-/* When submitted: fade out content, fade in message */
+/* Success State */
 .signup-card.is-success .card-content {
   opacity: 0;
+  transform: scale(0.95);
+  pointer-events: none;
 }
 
 .signup-card.is-success .success-message {
   opacity: 1;
   pointer-events: auto;
+  animation: successPop 0.5s ease-out;
 }
 
+@keyframes successPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ===== RESPONSIVE BREAKPOINTS ===== */
+
+/* Tablet & smaller laptops */
 @media (max-width: 1100px) {
   .page {
     flex-direction: column;
-    gap: 64px;
-    padding: 48px;
-  }
-
-  .headline {
-    font-size: 48px;
-    text-align: center;
+    gap: 48px;
+    padding: 48px 32px;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    height: auto;
   }
 
   .left {
     text-align: center;
+    max-width: 600px;
+  }
+
+  .brand {
+    display: flex;
+    justify-content: center;
+  }
+
+  .headline {
+    margin-bottom: 40px;
   }
 
   .points {
+    max-width: 500px;
     margin: 0 auto;
+    text-align: left;
+  }
+
+  .point {
+    padding-left: 16px;
+  }
+}
+
+/* Tablets */
+@media (max-width: 768px) {
+  .page {
+    padding: 40px 24px;
+    gap: 40px;
+  }
+
+  .headline {
+    font-size: 36px;
+    margin-bottom: 32px;
+  }
+
+  .points {
+    gap: 20px;
+  }
+
+  .point h3 {
+    font-size: 18px;
+  }
+
+  .point p {
+    font-size: 14px;
+  }
+
+  .signup-card {
+    padding: 40px 28px;
+  }
+}
+
+/* Mobile phones */
+@media (max-width: 480px) {
+  .page {
+    padding: 32px 16px;
+    gap: 32px;
+  }
+
+  .brand img {
+    height: 24px;
+  }
+
+  .headline {
+    font-size: 28px;
+    line-height: 1.15;
+    margin-bottom: 28px;
+  }
+
+  .points {
+    gap: 18px;
+  }
+
+  .point {
+    padding-left: 14px;
+    border-left-width: 2px;
+  }
+
+  .point h3 {
+    font-size: 16px;
+    margin-bottom: 4px;
+  }
+
+  .point p {
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .signup-card {
+    padding: 32px 20px;
+    border-radius: 20px;
+  }
+
+  .card-title {
+    font-size: 22px;
+  }
+
+  .card-subtitle {
+    font-size: 14px;
+    margin: 10px 0 28px;
+  }
+
+  .signup-form {
+    gap: 12px;
+  }
+
+  /* Stack name fields on mobile */
+  .name-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .field {
+    height: 52px;
+    padding: 0 18px;
+    font-size: 16px;
+    border-radius: 12px;
+  }
+
+  .cta {
+    height: 54px;
+    font-size: 16px;
+    border-radius: 12px;
+    margin-top: 6px;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 360px) {
+  .page {
+    padding: 24px 12px;
+  }
+
+  .headline {
+    font-size: 24px;
+  }
+
+  .signup-card {
+    padding: 28px 16px;
+  }
+}
+
+/* Prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .brand,
+  .headline,
+  .point,
+  .right {
+    animation: none;
+  }
+
+  .field,
+  .cta,
+  .point,
+  .card-content,
+  .success-message {
+    transition: none;
+  }
+}
+
+/* Landscape mobile */
+@media (max-height: 600px) and (orientation: landscape) {
+  .page {
+    flex-direction: row;
+    padding: 24px 40px;
+    gap: 40px;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .left {
+    text-align: left;
+    max-width: 50%;
+  }
+
+  .brand {
+    justify-content: flex-start;
+  }
+
+  .points {
+    margin: 0;
+    gap: 16px;
+  }
+
+  .headline {
+    font-size: 28px;
+    margin-bottom: 24px;
+  }
+
+  .point h3 {
+    font-size: 16px;
+  }
+
+  .point p {
+    font-size: 13px;
+  }
+
+  .signup-card {
+    padding: 32px 28px;
   }
 }

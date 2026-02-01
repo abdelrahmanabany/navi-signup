@@ -56,8 +56,10 @@
             <p class="card-subtitle">First 20 get 1 year free</p>
 
             <form class="signup-form" id="signupForm" autocomplete="off">
-              <input class="field" type="text" name="firstName" placeholder="First Name" required />
-              <input class="field" type="text" name="lastName" placeholder="Last Name" required />
+              <div class="name-row">
+                <input class="field" type="text" name="firstName" placeholder="First Name" required />
+                <input class="field" type="text" name="lastName" placeholder="Last Name" required />
+              </div>
               <input class="field" type="email" name="email" placeholder="Email" required />
               <!-- Honeypot field - hidden from users, catches bots -->
               <input type="text" name="website" style="position:absolute;left:-9999px;opacity:0;height:0;" tabindex="-1" autocomplete="off" />
