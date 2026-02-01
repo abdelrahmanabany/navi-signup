@@ -2,7 +2,7 @@
 const ALLOWED_ORIGINS = [
   'https://navi.buildn.cloud',
   'https://navi.geo-ed.tech',
-  'https://navi-admin.buildn.cloud',  // Admin dashboard
+  'https://navi-dash.buildn.cloud',  // Admin dashboard
   'http://localhost:3000',
   'http://127.0.0.1:3000',
 ];
