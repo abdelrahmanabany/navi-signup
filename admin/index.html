@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Navi Admin - Signups</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+
+  <body>
+    <main class="dashboard">
+      <header class="header">
+        <div class="brand">
+          <img src="./navi-logo.png" alt="Navi logo" />
+          <span class="brand-text">Admin</span>
+        </div>
+        <div class="stats">
+          <span class="stat-label">Total Signups:</span>
+          <span class="stat-value" id="totalCount">-</span>
+        </div>
+      </header>
+
+      <div class="controls">
+        <button class="btn" id="refreshBtn">Refresh</button>
+        <button class="btn btn-secondary" id="exportBtn">Export CSV</button>
+      </div>
+
+      <div class="table-container">
+        <table class="signups-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Signed Up</th>
+            </tr>
+          </thead>
+          <tbody id="signupsBody">
+            <tr>
+              <td colspan="4" class="loading">Loading signups...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+
+    <script>
+      const API_URL = "https://navi-signup-api.abdelrahmanabany.workers.dev";
+
+      async function fetchSignups() {
+        const tbody = document.getElementById("signupsBody");
+        const totalCount = document.getElementById("totalCount");
+
+        try {
+          const response = await fetch(API_URL, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" }
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            totalCount.textContent = data.count;
+
+            if (data.signups.length === 0) {
+              tbody.innerHTML = '<tr><td colspan="4" class="empty">No signups yet</td></tr>';
+              return;
+            }
+
+            tbody.innerHTML = data.signups.map((signup, index) => `
+              <tr>
+                <td>${signup.id}</td>
+                <td>${escapeHtml(signup.name)}</td>
+                <td><a href="mailto:${escapeHtml(signup.email)}">${escapeHtml(signup.email)}</a></td>
+                <td>${formatDate(signup.created_at)}</td>
+              </tr>
+            `).join('');
+          } else {
+            tbody.innerHTML = `<tr><td colspan="4" class="error">Error: ${data.error}</td></tr>`;
+          }
+        } catch (error) {
+          tbody.innerHTML = '<tr><td colspan="4" class="error">Failed to load signups</td></tr>';
+          console.error(error);
+        }
+      }
+
+      function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      function formatDate(dateStr) {
+        const date = new Date(dateStr + 'Z');
+        return date.toLocaleString('en-US', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+      }
+
+      function exportCSV() {
+        const rows = document.querySelectorAll('.signups-table tbody tr');
+        if (rows.length === 0 || rows[0].querySelector('.loading, .empty, .error')) {
+          alert('No data to export');
+          return;
+        }
+
+        let csv = 'ID,Name,Email,Signed Up\n';
+        rows.forEach(row => {
+          const cells = row.querySelectorAll('td');
+          const rowData = [
+            cells[0].textContent,
+            `"${cells[1].textContent.replace(/"/g, '""')}"`,
+            cells[2].textContent,
+            `"${cells[3].textContent}"`
+          ];
+          csv += rowData.join(',') + '\n';
+        });
+
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `navi-signups-${new Date().toISOString().split('T')[0]}.csv`;
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+
+      document.getElementById("refreshBtn").addEventListener("click", fetchSignups);
+      document.getElementById("exportBtn").addEventListener("click", exportCSV);
+
+      // Initial load
+      fetchSignups();
+    </script>
+  </body>
+</html>

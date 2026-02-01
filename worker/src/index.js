@@ -2,6 +2,7 @@
 const ALLOWED_ORIGINS = [
   'https://navi.buildn.cloud',
   'https://navi.geo-ed.tech',
+  'https://navi-admin.buildn.cloud',  // Admin dashboard
   'http://localhost:3000',
   'http://127.0.0.1:3000',
 ];
@@ -23,14 +24,19 @@ export default {
       });
     }
 
-    // Only accept POST
-    if (request.method !== 'POST') {
-      return jsonResponse({ error: 'Method not allowed' }, 405, allowedOrigin);
-    }
-
     // Validate Origin header (block requests without valid origin)
     if (!ALLOWED_ORIGINS.includes(origin)) {
       return jsonResponse({ error: 'Forbidden' }, 403, allowedOrigin);
+    }
+
+    // GET - Fetch all signups (for admin dashboard, protected by Zero Trust)
+    if (request.method === 'GET') {
+      return handleGetSignups(env.DB, allowedOrigin);
+    }
+
+    // Only accept POST for signups
+    if (request.method !== 'POST') {
+      return jsonResponse({ error: 'Method not allowed' }, 405, allowedOrigin);
     }
 
     // Validate Content-Type
@@ -105,6 +111,24 @@ export default {
     }
   },
 };
+
+// Fetch all signups for admin dashboard
+async function handleGetSignups(db, origin) {
+  try {
+    const { results } = await db.prepare(
+      'SELECT id, name, email, created_at FROM signups ORDER BY created_at DESC'
+    ).all();
+
+    return jsonResponse({
+      success: true,
+      count: results.length,
+      signups: results
+    }, 200, origin);
+  } catch (error) {
+    console.error('Error fetching signups:', error);
+    return jsonResponse({ error: 'Failed to fetch signups' }, 500, origin);
+  }
+}
 
 // Rate limiting using D1
 async function checkRateLimit(db, ip) {
