@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Navi Landing</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+
+  <body>
+    <main class="page">
+
+      <section class="left">
+        <div class="brand">
+          <img src="./navi-logo.png" alt="Navi logo" />
+        </div>
+
+        <h1 class="headline">
+          STUDY SMARTER.<br />
+          UNDERSTAND FASTER.
+        </h1>
+
+        <div class="points">
+          <div class="point">
+            <h3>Explain content</h3>
+            <p>Break down concepts step by step, in simple language.</p>
+          </div>
+
+          <div class="point">
+            <h3>Assignment help</h3>
+            <p>Get guided support without being given the answer.</p>
+          </div>
+
+          <div class="point">
+            <h3>Group study</h3>
+            <p>Study together, share context, and learn as a group.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="right">
+        <div class="signup-card" id="signupCard">
+
+          <div class="card-content" id="cardContent">
+            <h2 class="card-title">SIGN UP</h2>
+            <p class="card-subtitle">First 20 get 1 year free</p>
+
+            <form class="signup-form" id="signupForm">
+              <input class="field" type="text" name="name" placeholder="Name" required />
+              <input class="field" type="email" name="email" placeholder="Email" required />
+              <button class="cta" type="submit">Sign Up</button>
+            </form>
+          </div>
+
+          <div class="success-message" id="successMessage">
+            Thanks for signing up for early access to Navi!
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <script>
+      const form = document.getElementById("signupForm");
+      const card = document.getElementById("signupCard");
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault(); // prevents page reload
+        card.classList.add("is-success");
+      });
+    </script>
+  </body>
+</html>

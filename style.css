@@ -1,0 +1,194 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+:root {
+  --card-purple: #7a41d8;
+  --input-bg: #efe8fb;
+}
+
+body {
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.page {
+  height: 100vh;
+  display: flex;
+  align-items: center;        /* vertical center */
+  justify-content: center;    /* horizontal center */
+  gap: 100px;                 /* space between left & right */
+  padding: 80px;
+
+  background: url("./bg2.png") center/cover no-repeat;
+}
+
+.left {
+  max-width: 600px;
+  color: #ffffff;
+}
+
+/* Logo */
+.brand {
+  margin-bottom: 25px;
+}
+
+.brand img {
+  height: 24px;
+  width: auto;
+  display: block;
+}
+
+/* Headline */
+.headline {
+  font-size: 50px;
+  font-weight: 750;
+  line-height: 1.15;
+  margin: 0 0 60px;
+}
+
+.points {
+  max-width: 460px;
+}
+
+.point {
+  margin-bottom: 32px;
+}
+
+.point h3 {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 6px;
+}
+
+.point p {
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 0;
+  opacity: 0.9;
+}
+
+.right {
+  display: block;
+}
+
+/* Card */
+.signup-card {
+  width: 520px;
+  background: #ffffff;
+  border-radius: 28px;
+  padding: 64px 56px;
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.2);
+  position: relative; /* needed for centering the success message */
+  overflow: hidden;
+}
+
+.card-content {
+  transition: opacity 300ms ease;
+}
+
+/* Card text */
+.card-title {
+  margin: 0;
+  text-align: center;
+  color: var(--card-purple);
+  font-weight: 800;
+  letter-spacing: 1px;
+  font-size: 28px;
+}
+
+.card-subtitle {
+  margin: 10px 0 38px;
+  text-align: center;
+  color: #5a5a5a;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* Form */
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.field {
+  height: 62px;
+  padding: 0 22px;
+  border: none;
+  border-radius: 14px;
+  background: var(--input-bg);
+  font-size: 18px;
+  outline: none;
+}
+
+.field::placeholder {
+  color: rgba(0, 0, 0, 0.55);
+}
+
+/* Button */
+.cta {
+  margin-top: 10px;
+  height: 66px;
+  border: none;
+  border-radius: 14px;
+  background: var(--card-purple);
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.success-message {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 64px 56px;
+  text-align: center;
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 300ms ease;
+
+  color: #7a41d8;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* When submitted: fade out content, fade in message */
+.signup-card.is-success .card-content {
+  opacity: 0;
+}
+
+.signup-card.is-success .success-message {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@media (max-width: 1100px) {
+  .page {
+    flex-direction: column;
+    gap: 64px;
+    padding: 48px;
+  }
+
+  .headline {
+    font-size: 48px;
+    text-align: center;
+  }
+
+  .left {
+    text-align: center;
+  }
+
+  .points {
+    margin: 0 auto;
+  }
+}
